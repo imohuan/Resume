@@ -3,11 +3,7 @@
 
 name: Node.js CI
 
-on:
-  push:
-    branches: [ main ]
-  pull_request:
-    branches: [ main ]
+on: [push]
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -21,7 +17,12 @@ jobs:
       uses: actions/setup-node@v1
       with:
         node-version: ${{ matrix.node-version }}
-    - run: node -v
-    - run: ls
-    - run: cd src 
-    - run: ls
+    - run: npm install 
+    - run: npm run build
+    - name: "build Clone to gitee"
+      uses: pixta-dev/repository-mirroring-action@v1
+      with:
+        target_repo_url: 
+          git@gitee.com:imohuan/resume.git
+        ssh_private_key: 
+          ${{ secrets.GITHUBCLONEGITEE }}
